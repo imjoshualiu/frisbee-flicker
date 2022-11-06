@@ -11,21 +11,28 @@ export class frisbee_flicker extends Scene {
 
         // At the beginning of our program, load one of each of these shape definitions onto the GPU.
         this.shapes = {
-            
+            cylinder: new defs.Capped_Cylinder(4, 12, [[0, 2], [0, 1]]),
         };
 
         // *** Materials
         this.materials = {
+            test: new Material(new defs.Phong_Shader(),
+                {ambient: .4, diffusivity: .6, color: hex_color("#ffffff")}),
             
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 10, 20), vec3(0, 0, 0), vec3(0, 1, 0));
+        this.angle_left = false
+        this.angle_right = false
+        this.frisbee_angle = 0
     }
 
     make_control_panel() {
-        // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
-        // this.key_triggered_button("View solar system", ["Control", "0"], () => this.attached = () => null);
-        // this.new_line();
+        this.key_triggered_button("View solar system", ["Control", "0"], () => this.attached = () => null);
+        this.new_line();
+        this.key_triggered_button("Angle Left", ["c"], () => this.angle_left = true);
+        this.key_triggered_button("Angle Right", ["b"], () => this.angle_right = true);
+    
     }
 
     display(context, program_state) {
@@ -34,7 +41,37 @@ export class frisbee_flicker extends Scene {
         if (!context.scratchpad.controls) {
             this.children.push(context.scratchpad.controls = new defs.Movement_Controls());
             // Define the global camera and projection matrices, which are stored in program_state.
+            console.log(this.initial_camera_location)
             program_state.set_camera(this.initial_camera_location);
         }
+
+        program_state.projection_transform = Mat4.perspective(
+            Math.PI / 4, context.width / context.height, .1, 1000);
+
+
+
+        const t = program_state.animation_time / 1000, dt = program_state.animation_delta_time / 1000;
+        const yellow = hex_color("#fac91a");
+        let model_transform = Mat4.identity();
+
+        const light_position = vec4(0, 0, 0, 1);
+        // The parameters of the Light are: position, color, size
+        program_state.lights = [new Light(light_position, yellow, 1000)];
+
+        let frisbee_transform = model_transform.times(Mat4.scale(3,3,1/2))
+        console.log(this.frisbee_angle)
+
+        if(this.angle_left){
+            this.frisbee_angle -= 1
+            this.angle_left = false
+        }
+        if(this.angle_right){
+            this.frisbee_angle += 1
+            this.angle_right = false
+        }
+        frisbee_transform = frisbee_transform.times(Mat4.rotation(this.frisbee_angle,0,0,1))
+        this.shapes.cylinder.draw(context, program_state, frisbee_transform, this.materials.test.override({color: yellow, ambient:1}));
+    
+        
     }
 }
