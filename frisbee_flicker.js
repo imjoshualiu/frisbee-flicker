@@ -74,6 +74,7 @@ export class frisbee_flicker extends Scene {
         this.stage_targets = []
         this.start_stage = true;
         this.completed_time = 0;
+        this.attempt_count = 0;
 
 
 
@@ -99,6 +100,8 @@ export class frisbee_flicker extends Scene {
         this.new_line();
         this.new_line();
         this.live_string(box => box.textContent = "- Current Level: " + this.current_level);
+        this.new_line();
+        this.live_string(box => box.textContent = "- Number of Attempts: " + this.attempt_count);
         this.new_line();
 
     }
@@ -280,6 +283,7 @@ export class frisbee_flicker extends Scene {
             // this.target_color = red; //need to fix
             this.collided = false;
             this.bodies = []
+            
 
         }
 
@@ -296,6 +300,7 @@ export class frisbee_flicker extends Scene {
             this.start_stage = true;
             this.reset = true;
             this.completed_time = 0;
+            this.attempt_count = 0;
         }
 
 
@@ -349,6 +354,7 @@ export class frisbee_flicker extends Scene {
             this.vertical_velocity = this.velocity * Math.sin(this.throwing_angle_rad())
             this.throw_time = t;
             this.frisbee_height = this.throwing_height
+            this.attempt_count++;
         }
         let frisbee_scale = Mat4.scale(3, 3, 1 / 2)
 
