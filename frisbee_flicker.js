@@ -18,16 +18,21 @@ export class frisbee_flicker extends Scene {
 
         // At the beginning of our program, load one of each of these shape definitions onto the GPU.
         this.shapes = {
+            cylinder: new defs.Capped_Cylinder(4, 12, [[0, 2], [0, 1]]),
             frisbee: new defs.Capped_Cylinder(4, 12, [[0, 2], [0, 1]]),
             target: new defs.Capped_Cylinder(4, 12, [[0, 2], [0, 1]]),
             sphere: new defs.Subdivision_Sphere(4),
+            ground: new defs.Square(),
+            sky: new defs.Square(),
         };
 
         // *** Materials
         this.materials = {
             test: new Material(new defs.Phong_Shader(),
-                { ambient: .4, diffusivity: .6, color: hex_color("#ffffff") }),
-
+                {ambient: .4, diffusivity: .6, color: hex_color("#ffffff")}),
+            ground: new Material(new defs.Phong_Shader(), {color: hex_color("#23cc5e"), ambient: 0.8}),
+            sky: new Material(new defs.Phong_Shader(), {ambient: 1, color: hex_color("#1da4de")}),
+            shadow: new Material(new defs.Phong_Shader(), {color: color(0,0,0,0.75), specularity : 0.0, diffusivity: 0.0}),
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 15, 20), vec3(0, 15, 0), vec3(0, 1, 0));
@@ -113,28 +118,28 @@ export class frisbee_flicker extends Scene {
         }
     }
 
-    decrease_vel() {
-        if (this.decrease_velocity && this.velocity > 11) {
+    decrease_vel(){
+        if(this.decrease_velocity && this.velocity > 11){
             this.velocity -= 1;
             this.decrease_velocity = false;
         }
     }
 
 
-    throwing_angle_rad() {
-        return this.throwing_angle / 180 * Math.PI
+    throwing_angle_rad(){
+        return this.throwing_angle/180*Math.PI
     }
 
-    calculate_drag(velocity, air_density, area, drag_coefficient) {
+    calculate_drag(velocity, air_density, area, drag_coefficient){
 
         //Use the Prandtl Relationship to calculate the drag force (horizontal) on the frisbee
 
-        let drag_force = 0.5 * (air_density) * (velocity ** 2) * area * drag_coefficient
+        let drag_force = 0.5*(air_density) * (velocity**2) * area * drag_coefficient
 
         return drag_force
     }
 
-    calculate_lift(velocity, air_density, area, angle_of_attack) {
+    calculate_lift(velocity, air_density, area, angle_of_attack){
         //lift coefficient calculation
         let lift_coefficient_intercept = 0.15
         let lift_coefficient_attack = 1.4
@@ -306,6 +311,94 @@ export class frisbee_flicker extends Scene {
 
         return true;
     }
+
+    calculate_distance(angle, time){
+
+        let mass = 0.175
+        let gravity = 9.8
+        let density_of_air_at_sea_level = 1.23
+        let standard_frisbee_area = 0.0531
+
+        //drag calculations
+        let angle_of_attack = angle
+        let angle_of_least_incidence = -0.0698132
+        
+        //drag coefficient calculation
+        let form_drag = 0.08
+        let induced_drag = 2.72
+        let drag_coefficient = form_drag + induced_drag * (angle_of_attack - angle_of_least_incidence)**2
+
+        //calculate lift force
+        let lift_force = this.calculate_lift(this.horizontal_velocity, density_of_air_at_sea_level, standard_frisbee_area, angle)
+        let gravitational_force = mass * gravity
+
+        let vertical_force = lift_force - gravitational_force
+        let vertical_acceleration = vertical_force/mass
+
+        //account for frisbee terminal velocity
+        let terminal_velocity = -Math.sqrt((2*gravitational_force)/(density_of_air_at_sea_level*drag_coefficient*standard_frisbee_area))
+        
+        if(this.vertical_velocity + 0.5*(vertical_acceleration * time) <= terminal_velocity){
+            this.vertical_velocity = terminal_velocity
+        } 
+        else{
+            this.vertical_velocity = this.vertical_velocity + 0.5*(vertical_acceleration * time)
+        }
+        
+        let drag_force = this.calculate_drag(this.horizontal_velocity, density_of_air_at_sea_level, standard_frisbee_area, drag_coefficient)
+        let horizontal_acceleration = -drag_force/mass
+        
+        this.horizontal_velocity = this.horizontal_velocity + 0.5*(horizontal_acceleration * time)
+    }
+
+    calculate_arc(time){
+
+        let process_angle = this.frisbee_angle
+        if(this.frisbee_angle > 45){
+            process_angle = 90 - this.frisbee_angle; 
+            if(this.frisbee_angle < 0){
+                process_angle = -90 - this.frisbee_angle 
+            }
+        }
+        
+
+        let curve_angle = (process_angle)/180*Math.PI
+        curve_angle = Math.round((curve_angle + Number.EPSILON) * 1000) / 1000
+
+        console.log("curve angle:" , curve_angle)
+        console.log("frisbee angle:" , this.frisbee_angle)
+
+        let arc_calculation = (Math.sin(curve_angle))*(-((2*time-10)**2)+100)
+
+
+        arc_calculation = Math.round((arc_calculation + Number.EPSILON) * 1000) / 1000
+        console.log("arc calculation:" , arc_calculation)
+
+        // if((this.curve < 0 &&  this.arc_calculation > 0) || (this.curve > 0 && this.arc_calculation < 0) ){
+        //     this.curve = 0
+        // }
+        // else{
+        //     this.curve = arc_calculation
+        // }
+
+        this.curve = arc_calculation
+        
+    }
+
+    update_fribsee_angle(){
+        if(this.frisbee_angle < 0){
+            this.frisbee_angle+=(1/25);
+            // if(this.frisbee_angle>=0){
+            //     this.frisbee_angle = 0
+            // }
+        } else{
+            this.frisbee_angle-=(1/25);
+            // if(this.frisbee_angle<=0){
+            //     this.frisbee_angle = 0
+            // }
+        }
+    }
+    
 
     display(context, program_state) {
         // display():  Called once per frame of animation.
@@ -505,5 +598,29 @@ export class frisbee_flicker extends Scene {
 
 
 
+        
+        //create ground
+        let ground_width = 750;
+        let ground_depth = 1000;
+        let ground_transform = Mat4.identity().times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.translation(0, 0, 5)).times(Mat4.scale(ground_width, ground_depth, 1));
+
+        this.shapes.ground.draw(context, program_state, ground_transform, this.materials.ground);
+
+        //create sky
+        let sky_width = 750;
+        let sky_height = 335;
+        let sky_transform = Mat4.identity().times(Mat4.translation(0, 95, -975)).times(Mat4.scale(sky_width, sky_height, 1));
+
+        this.shapes.sky.draw(context, program_state, sky_transform, this.materials.sky);
+        
+
+        //create shadows
+        //ground is at y = -3
+        //frisbee is at y = ??
+        let frisbee_shadow_transform = Mat4.identity().times(Mat4.translation(this.curve, -5.2, -this.distance)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(frisbee_scale);
+        let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, -5.2, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 1/2));
+        
+        this.shapes.cylinder.draw(context, program_state, frisbee_shadow_transform, this.materials.shadow);
+        this.shapes.cylinder.draw(context, program_state, target_shadow_transform, this.materials.shadow);
     }
 }
