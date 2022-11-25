@@ -758,7 +758,7 @@ export class frisbee_flicker extends Scene {
         let grass_transform = Mat4.identity().times(Mat4.translation(0, 1, -50)).times(Mat4.scale(15, 7, 10));
         //this.shapes.grass.draw(context, program_state, grass_transform, this.materials.grass);
         
-        for(var i = 0; i < 202; i += 1)
+        for(var i = 3; i < 30; i += 1)
         {
             this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
             this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
@@ -791,8 +791,6 @@ export class frisbee_flicker extends Scene {
             this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
             this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
             this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            
-            //this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
         }
 
         // for(var i = 0; i < 30; i += 1)
