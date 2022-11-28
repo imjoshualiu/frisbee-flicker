@@ -400,7 +400,7 @@ export class frisbee_flicker extends Scene {
         //model transform creation
         let model_transform = Mat4.identity();
 
-        const light_position = vec4(0, 300, 0, 1);
+        const light_position = vec4(0, 20, 0, 1);
         // The parameters of the Light are: position, color, size
         program_state.lights = [new Light(light_position, yellow, 1000)];
 
@@ -581,131 +581,131 @@ export class frisbee_flicker extends Scene {
 
         let cumulus1_1_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed, 0, 1, 0))
                                                 .times(Mat4.translation(500, 190, 500))
-                                                .times(Mat4.scale(50, 19, 19));
+                                                .times(Mat4.scale(70, 22, 19));
         let cumulus1_2_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed, 0, 1, 0))
-                                                .times(Mat4.translation(500, 204, 500))
-                                                .times(Mat4.scale(30, 19, 19));
+                                                .times(Mat4.translation(500, 207, 500))
+                                                .times(Mat4.scale(50, 22, 19));
         let cumulus2_1_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + Math.PI/2, 0, 1, 0))
                                                 .times(Mat4.translation(500, 100, 500))
-                                                .times(Mat4.scale(60, 19, 19));
+                                                .times(Mat4.scale(80, 22, 19));
         let cumulus2_2_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + Math.PI/2, 0, 1, 0))
-                                                .times(Mat4.translation(500, 114, 500))
-                                                .times(Mat4.scale(45, 19, 19));
+                                                .times(Mat4.translation(500, 117, 500))
+                                                .times(Mat4.scale(55, 22, 19));
         let cumulus3_1_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + Math.PI, 0, 1, 0))
                                                 .times(Mat4.translation(500, 140, 500))
-                                                .times(Mat4.scale(55, 19, 19));
+                                                .times(Mat4.scale(90, 22, 19));
         let cumulus3_2_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + Math.PI, 0, 1, 0))
-                                                .times(Mat4.translation(500, 154, 500))
-                                                .times(Mat4.scale(35, 19, 19));
+                                                .times(Mat4.translation(500, 157, 500))
+                                                .times(Mat4.scale(70, 22, 19));
         let cumulus4_1_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + (3 * Math.PI) / 2, 0, 1, 0))
                                                 .times(Mat4.translation(500, 180, 500))
-                                                .times(Mat4.scale(65, 19, 19));
+                                                .times(Mat4.scale(80, 22, 19));
         let cumulus4_2_transform = Mat4.identity().times(Mat4.rotation(layer_1_constant * rotation_speed + (3 * Math.PI) / 2, 0, 1, 0))
-                                                .times(Mat4.translation(500, 194, 500))
-                                                .times(Mat4.scale(40, 19, 19));
+                                                .times(Mat4.translation(500, 197, 500))
+                                                .times(Mat4.scale(60, 22, 19));
         let cumulus5_1_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + 0.523599, 0, 1, 0))
                                                 .times(Mat4.translation(500, 130, 500))
-                                                .times(Mat4.scale(40, 19, 19));
+                                                .times(Mat4.scale(100, 22, 19));
         let cumulus5_2_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 144, 500))
-                                                .times(Mat4.scale(27, 19, 19));
+                                                .times(Mat4.translation(500, 147, 500))
+                                                .times(Mat4.scale(75, 22, 19));
         let cumulus6_1_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + Math.PI/2 + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 160, 500))
-                                                .times(Mat4.scale(65, 19, 19));
+                                                .times(Mat4.translation(500, 210, 500))
+                                                .times(Mat4.scale(76, 22, 19));
         let cumulus6_2_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + Math.PI/2 + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 174, 500))
-                                                .times(Mat4.scale(45, 19, 19));
+                                                .times(Mat4.translation(500, 227, 500))
+                                                .times(Mat4.scale(55, 22, 19));
         let cumulus7_1_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + Math.PI + 0.523599, 0, 1, 0))
                                                 .times(Mat4.translation(500, 120, 500))
-                                                .times(Mat4.scale(45, 19, 19));
+                                                .times(Mat4.scale(60, 22, 19));
         let cumulus7_2_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + Math.PI + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 134, 500))
-                                                .times(Mat4.scale(25, 19, 19));
+                                                .times(Mat4.translation(500, 137, 500))
+                                                .times(Mat4.scale(42, 22, 19));
         let cumulus8_1_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + (3 * Math.PI) / 2 + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 210, 500))
-                                                .times(Mat4.scale(60, 19, 19));
+                                                .times(Mat4.translation(500, 220, 500))
+                                                .times(Mat4.scale(80, 22, 19));
         let cumulus8_2_transform = Mat4.identity().times(Mat4.rotation(layer_2_constant * rotation_speed + (3 * Math.PI) / 2 + 0.523599, 0, 1, 0))
-                                                .times(Mat4.translation(500, 224, 500))
-                                                .times(Mat4.scale(42, 19, 19));
+                                                .times(Mat4.translation(500, 237, 500))
+                                                .times(Mat4.scale(62, 22, 19));
         let cumulus9_1_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + 1.0472, 0, 1, 0))
                                                 .times(Mat4.translation(500, 185, 500))
-                                                .times(Mat4.scale(50, 19, 19));
+                                                .times(Mat4.scale(105, 22, 19));
         let cumulus9_2_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + 1.0472, 0, 1, 0))
-                                                .times(Mat4.translation(500, 199, 500))
-                                                .times(Mat4.scale(32, 19, 19));
+                                                .times(Mat4.translation(500, 202, 500))
+                                                .times(Mat4.scale(80, 22, 19));
         let cumulus10_1_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + Math.PI/2 + 1.0472, 0, 1, 0))
                                                 .times(Mat4.translation(500, 120, 500))
-                                                .times(Mat4.scale(55, 19, 19));
+                                                .times(Mat4.scale(74, 22, 19));
         let cumulus10_2_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + Math.PI/2 + 1.0472, 0, 1, 0))
-                                                .times(Mat4.translation(500, 134, 500))
-                                                .times(Mat4.scale(31, 19, 19));
+                                                .times(Mat4.translation(500, 137, 500))
+                                                .times(Mat4.scale(55, 22, 19));
         let cumulus11_1_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + Math.PI + 1.0472, 0, 1, 0))
                                                 .times(Mat4.translation(500, 105, 500))
-                                                .times(Mat4.scale(60, 19, 19));
+                                                .times(Mat4.scale(83, 22, 19));
         let cumulus11_2_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + Math.PI + 1.0472, 0, 1, 0))
-                                                .times(Mat4.translation(500, 119, 500))
-                                                .times(Mat4.scale(43, 19, 19));
+                                                .times(Mat4.translation(500, 122, 500))
+                                                .times(Mat4.scale(60, 22, 19));
         let cumulus12_1_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + (3 * Math.PI) / 2 + 1.0472, 0, 1, 0))
                                                 .times(Mat4.translation(500, 90, 500))
-                                                .times(Mat4.scale(65, 19, 19));
+                                                .times(Mat4.scale(82, 22, 19));
         let cumulus12_2_transform = Mat4.identity().times(Mat4.rotation(layer_3_constant * rotation_speed + (3 * Math.PI) / 2 + 1.0472, 0, 1, 0))
-                                                .times(Mat4.translation(500, 104, 500))
-                                                .times(Mat4.scale(44, 19, 19));
+                                                .times(Mat4.translation(500, 107, 500))
+                                                .times(Mat4.scale(60, 22, 19));
 
         let stratus1_transform = Mat4.identity().times(Mat4.rotation(layer_4_constant * rotation_speed, 0, 1, 0))
                                                 .times(Mat4.translation(520, 230, 520))
-                                                .times(Mat4.scale(50, 15, 20));
+                                                .times(Mat4.scale(70, 15, 20));
         let stratus2_transform = Mat4.identity().times(Mat4.rotation(layer_4_constant * rotation_speed + Math.PI/3, 0, 1, 0))
                                                 .times(Mat4.translation(520, 160, 520))
-                                                .times(Mat4.scale(60, 12, 20));
+                                                .times(Mat4.scale(90, 17, 20));
         let stratus3_transform = Mat4.identity().times(Mat4.rotation(layer_4_constant * rotation_speed + (2 *Math.PI)/3, 0, 1, 0))
                                                 .times(Mat4.translation(520, 140, 520))
-                                                .times(Mat4.scale(55, 12, 20));
+                                                .times(Mat4.scale(75, 14, 20));
         let stratus4_transform = Mat4.identity().times(Mat4.rotation(layer_4_constant * rotation_speed + Math.PI, 0, 1, 0))
                                                 .times(Mat4.translation(520, 210, 520))
-                                                .times(Mat4.scale(70, 17, 20));
+                                                .times(Mat4.scale(100, 19, 20));
         let stratus5_transform = Mat4.identity().times(Mat4.rotation(layer_4_constant * rotation_speed + Math.PI + Math.PI/3, 0, 1, 0))
                                                 .times(Mat4.translation(520, 150, 520))
-                                                .times(Mat4.scale(40, 10, 20));
+                                                .times(Mat4.scale(84, 16, 20));
         let stratus6_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + Math.PI + (2 *Math.PI)/3, 0, 1, 0))
                                                 .times(Mat4.translation(520, 120, 520))
-                                                .times(Mat4.scale(65, 12, 20));
+                                                .times(Mat4.scale(97, 17, 20));
         let stratus7_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 200, 520))
-                                                .times(Mat4.scale(58, 15, 20));
+                                                .times(Mat4.scale(104, 20, 20));
         let stratus8_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + Math.PI/3 + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 130, 520))
-                                                .times(Mat4.scale(48, 10, 20));
+                                                .times(Mat4.scale(85, 14, 20));
         let stratus9_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + (2 *Math.PI)/3 + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 110, 520))
-                                                .times(Mat4.scale(75, 18, 20));
+                                                .times(Mat4.scale(70, 18, 20));
         let stratus10_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + Math.PI + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 240, 520))
-                                                .times(Mat4.scale(45, 12, 20));
+                                                .times(Mat4.scale(90, 18, 20));
         let stratus11_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + Math.PI + Math.PI/3 + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 100, 520))
-                                                .times(Mat4.scale(37, 10, 20));
+                                                .times(Mat4.scale(80, 15, 20));
         let stratus12_transform = Mat4.identity().times(Mat4.rotation(layer_5_constant * rotation_speed + Math.PI + (2 *Math.PI)/3 + 0.349066, 0, 1, 0))
                                                 .times(Mat4.translation(520, 220, 520))
-                                                .times(Mat4.scale(60, 10, 20));
+                                                .times(Mat4.scale(110, 21, 20));
         let stratus13_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + 0.698132, 0, 1, 0))
                                                 .times(Mat4.translation(520, 170, 520))
-                                                .times(Mat4.scale(69, 11, 20));
+                                                .times(Mat4.scale(118, 22, 20));
         let stratus14_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + + Math.PI/3 + 0.698132, 0, 1, 0))
                                                 .times(Mat4.translation(520, 190, 520))
-                                                .times(Mat4.scale(43, 9, 20));
+                                                .times(Mat4.scale(97, 16, 20));
         let stratus15_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + (2 *Math.PI)/3 + 0.698132, 0, 1, 0))
-                                                .times(Mat4.translation(520, 175, 520))
-                                                .times(Mat4.scale(70, 15, 20));
+                                                .times(Mat4.translation(520, 140, 520))
+                                                .times(Mat4.scale(105, 19, 20));
         let stratus16_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + Math.PI + 0.698132, 0, 1, 0))
                                                 .times(Mat4.translation(520, 90, 520))
-                                                .times(Mat4.scale(72, 16, 20));
+                                                .times(Mat4.scale(90, 17, 20));
         let stratus17_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + Math.PI + Math.PI/3 + 0.698132, 0, 1, 0))
-                                                .times(Mat4.translation(520, 165, 520))
-                                                .times(Mat4.scale(42, 15, 20));
+                                                .times(Mat4.translation(520, 130, 520))
+                                                .times(Mat4.scale(80, 15, 20));
         let stratus18_transform = Mat4.identity().times(Mat4.rotation(layer_6_constant * rotation_speed + Math.PI + (2 *Math.PI)/3 + 0.698132, 0, 1, 0))
                                                 .times(Mat4.translation(520, 190, 520))
-                                                .times(Mat4.scale(57, 12, 20));
+                                                .times(Mat4.scale(96, 18, 20));
 
         //this.shapes.target.draw(context, program_state, test_transform,  this.materials.test.override({ color: this.target_color[0], ambient: 1 }));
         this.shapes.cloud.draw(context, program_state, stratus1_transform, this.materials.cloud);
@@ -760,37 +760,37 @@ export class frisbee_flicker extends Scene {
         
         for(var i = 3; i < 30; i += 1)
         {
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass_1);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_2);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_1);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_2);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_1);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_2);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_1);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass_2);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 15, 10)), this.materials.grass_1);
+            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 15, 10)), this.materials.grass);
         }
 
         // for(var i = 0; i < 30; i += 1)
