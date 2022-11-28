@@ -1,6 +1,7 @@
 import { defs, tiny } from './examples/common.js';
 import { Body } from './collision.js';
 
+
 const {
     Vector, Vector3, vec, vec3, vec4, color, hex_color, Shader, Matrix, Mat4, Light, Shape, Material, Scene,
 } = tiny;
@@ -513,6 +514,7 @@ export class frisbee_flicker extends Scene {
 
             if(element){
                 console.log(this.current_level)
+                
                 element.addEventListener("click", myFunction);
             }
 
@@ -540,10 +542,23 @@ export class frisbee_flicker extends Scene {
             document.getElementById("levels").innerHTML = levelsmsg;
 
             this.check_stage_completion(dt);
-
-
         }
+
         else if (this.current_level == 3) {
+            //ONE TARGET 
+            let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+
+            if (this.bodies.length == 0) {
+                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+            }
+
+            this.bodies[0].emplace(frisbee_transform);
+            this.bodies[1].emplace(target_transform)
+        }
+        else if (this.current_level == 4) {
+            //TWO TARGETS
             let target_transform1 = model_transform.times(Mat4.translation(50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
             let target_transform2 = model_transform.times(Mat4.translation(-50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
 
