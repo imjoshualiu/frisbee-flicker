@@ -26,6 +26,8 @@ export class frisbee_flicker extends Scene {
             sphere: new defs.Subdivision_Sphere(4),
             ground: new defs.Square(),
             sky: new defs.Subdivision_Sphere(4),
+            leaves: new defs.Subdivision_Sphere(2),
+            trunk: new defs.Square(),
             cloud: new (defs.Subdivision_Sphere.prototype.make_flat_shaded_version())(2),
             grass: new defs.Shape_From_File( "assets/Grass_03.obj"),
         };
