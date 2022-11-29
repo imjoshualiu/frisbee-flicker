@@ -6,6 +6,7 @@ const {
     Vector, Vector3, vec, vec3, vec4, color, hex_color, Shader, Matrix, Mat4, Light, Shape, Material, Scene,
 } = tiny;
 
+let first_level = true;
 
 //colors
 var yellow = hex_color("#fac91a");
@@ -93,6 +94,7 @@ export class frisbee_flicker extends Scene {
         this.start_stage = true;
         this.completed_time = 0;
         this.attempt_count = 0;
+        this.first_level = true;
 
         //sound effects
         this.hitAudio = new Audio("./assets/hit.mp3");
@@ -128,6 +130,10 @@ export class frisbee_flicker extends Scene {
         this.live_string(box => box.textContent = "- Number of Attempts: " + this.attempt_count);
         this.new_line();
         //this.key_triggered_button("Attach to cloud", ["Control", "1"], () => this.attached = () => this.cloud);
+    }
+
+    change_first_level(){
+        this.first_level = false;
     }
 
     increase_vel() {
@@ -296,6 +302,9 @@ export class frisbee_flicker extends Scene {
     }
 
     check_stage_completion(dt) {
+        if(first_level){
+            return false;
+        }
         for (let i = 0; i < this.stage_targets.length; i++) {
             if (!this.stage_targets[i])
                 return false;
@@ -511,14 +520,17 @@ export class frisbee_flicker extends Scene {
 
             function myFunction() {
                 element.remove();
-                console.log(this.current_level)
+                // console.log("test")
+                first_level = false;
             }
 
             if(element){
                 console.log(this.current_level)
                 
                 element.addEventListener("click", myFunction);
+                
             }
+            console.log(this.first_level)
 
         }
         if (this.current_level == 2) {
