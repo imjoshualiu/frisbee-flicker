@@ -29,7 +29,7 @@ export class frisbee_flicker extends Scene {
             leaves: new (defs.Subdivision_Sphere.prototype.make_flat_shaded_version())(2),
             trunk: new defs.Square(),
             cloud: new (defs.Subdivision_Sphere.prototype.make_flat_shaded_version())(2),
-            grass: new defs.Shape_From_File( "assets/grass.obj"),
+            grass: new defs.Shape_From_File( "assets/grass_7.obj"),
         };
 
         // *** Materials
@@ -821,109 +821,133 @@ export class frisbee_flicker extends Scene {
         let grass_transform = Mat4.identity().times(Mat4.translation(0, 1, -50)).times(Mat4.scale(15, 7, 10));
         //this.shapes.grass.draw(context, program_state, grass_transform, this.materials.grass);
         
-        for(var i = 3; i < 30; i += 1)
+        for(var i = 5; i < 20; i += 1)
         {
             if (!(i % 3))
             {
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                if (i > 10){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                }
+                if (i > 11){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                }
+                if (i > 12){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                }
+                if (i > 15){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                }   
             }
-            else if (!(i % 2)) //third row
+            else if (!(i % 2))
             {
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                if (i > 10){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                }
+                if (i > 11){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                }
+                if (i > 12){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                }
+                if (i > 15){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                }
             }
-            else //first row
+            else
             {
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
-                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                if (i > 10){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                }
+                if (i > 11){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                }
+                if (i > 12){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.355**i) - 3.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                }
+                if (i > 15){
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.355**i) - 1.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.355**i) - 1.05 * (1.355**i) + Math.sin(t))).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+                    this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.355**i) - 3.05 * (1.355**i))).times(Mat4.scale(15, 14, 10)), this.materials.grass_2);
+                }
             }
         }
 
