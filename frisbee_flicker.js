@@ -37,12 +37,13 @@ export class frisbee_flicker extends Scene {
             test: new Material(new defs.Phong_Shader(),
                 {ambient: .4, diffusivity: .6, color: hex_color("#ffffff")}),
             ground: new Material(new defs.Phong_Shader(), {color: hex_color("#23cc5e"), ambient: 0.8}),
+            frisbee: new Material(new defs.Phong_Shader(), {color: yellow, ambient: 1, diffusivity: 0.8, specularity: 0.2}),
             sky: new Material(new defs.Phong_Shader(), {ambient: 1, color: hex_color("#1da4de")}),
             shadow: new Material(new defs.Phong_Shader(), {color: color(0,0,0,0.75), specularity : 0.0, diffusivity: 0.0}),
             trunk: new Material(new defs.Phong_Shader(),
             {ambient: 1, diffusivity: .2, color: hex_color("#964B00"), specularity: 1}),
-            leaves: new Material(new defs.Phong_Shader(), {ambient: 1, diffusivity: 0.8, color: hex_color("#3A5F0B")}),
-            cloud: new Material(new defs.Phong_Shader(), {color: hex_color("#ffffff"), diffusivity: 0.6, ambient: 0.95}),
+            leaves: new Material(new defs.Phong_Shader(), {ambient: 0.9, diffusivity: 0.8, specularity : 0.5, color: hex_color("#3A5F0B")}),
+            cloud: new Material(new defs.Phong_Shader(), {color: hex_color("#ffffff"), diffusivity: 0.78, ambient: 0.92}),
             grass: new Material(new defs.Phong_Shader(), {color: hex_color("#18ba51"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
@@ -121,13 +122,16 @@ export class frisbee_flicker extends Scene {
         this.new_line()
         this.key_triggered_button("Increase Velocity", ["="], () => this.increase_velocity = true);
         this.key_triggered_button("Decrease Velocity", ["-"], () => this.decrease_velocity = true);
+        //camera views
+        this.key_triggered_button("Default View", ["Control", "0"], () => this.attached = () => this.initial_camera_location);
+        this.key_triggered_button("Side View", ["Control", "1"], () => this.attached = () => this.side);
         this.new_line();
         this.new_line();
         this.live_string(box => box.textContent = "- Current Level: " + this.current_level);
         this.new_line();
         this.live_string(box => box.textContent = "- Number of Attempts: " + this.attempt_count);
         this.new_line();
-        //this.key_triggered_button("Attach to cloud", ["Control", "1"], () => this.attached = () => this.cloud);
+    
     }
 
     increase_vel() {
@@ -418,9 +422,9 @@ export class frisbee_flicker extends Scene {
         //model transform creation
         let model_transform = Mat4.identity();
 
-        const light_position = vec4(0, 20, 0, 1);
+        const light_position = vec4(-10, 20, -100, 1);
         // The parameters of the Light are: position, color, size
-        program_state.lights = [new Light(light_position, yellow, 1000)];
+        program_state.lights = [new Light(light_position, yellow, 25000)];
 
         this.soft_reset()
 
@@ -481,7 +485,7 @@ export class frisbee_flicker extends Scene {
             this.elapsed_time_prev = elapsed_time
             this.update_fribsee_angle()
 
-            this.frisbee_trail_transforms.push(frisbee_transform.times(Mat4.scale(0.2, 0.2, 0.2)))
+            this.frisbee_trail_transforms.push(frisbee_transform.times(Mat4.scale(0.25, 0.25, 0.25)))
             frisbee_transform = frisbee_transform.times(Mat4.rotation(Math.PI / 2, 1, 0, 0)).times(Mat4.rotation(this.frisbee_angle / 180 * Math.PI, 0, 1, 0)).times(Mat4.rotation(Math.PI / 180, 0, 0, 1))
         }
         else {
@@ -492,7 +496,7 @@ export class frisbee_flicker extends Scene {
         }
 
         frisbee_transform = frisbee_transform.times(frisbee_scale)
-        this.shapes.frisbee.draw(context, program_state, frisbee_transform, this.materials.test.override({ color: yellow, ambient: 1 }));
+        this.shapes.frisbee.draw(context, program_state, frisbee_transform, this.materials.frisbee);
 
         //draw frisbee trail
         if (this.show_trail) {
@@ -621,7 +625,7 @@ export class frisbee_flicker extends Scene {
         this.check_stage_completion(dt);
 
         //create ground
-        let ground_width = 800;
+        let ground_width = 700;
         let ground_depth = 800;
         let ground_transform = Mat4.identity().times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(ground_width, ground_depth, 1));
 
@@ -951,10 +955,13 @@ export class frisbee_flicker extends Scene {
             }
         }
 
-        // for(var i = 0; i < 30; i += 1)
-        // {
-        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(10, 1, (-4 * 1.20**i) + 2.5)).times(Mat4.scale(15, 7, 10)), this.materials.grass);
-        // }
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -290)).times(Mat4.scale(15, 14, 10)), this.materials.grass);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200, 1, -290)).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -280)).times(Mat4.scale(15, 16, 10)), this.materials.grass_2);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -270)).times(Mat4.scale(15, 18, 10)), this.materials.grass);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 , 1, -260)).times(Mat4.scale(15, 23, 10)), this.materials.grass);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -250)).times(Mat4.scale(15, 25, 10)), this.materials.grass_1);
+        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -240)).times(Mat4.scale(15, 25, 10)), this.materials.grass_1);
 
         //create shadows
         //ground is at y = 0
@@ -968,7 +975,8 @@ export class frisbee_flicker extends Scene {
 
         this.shapes.cylinder.draw(context, program_state, frisbee_shadow_transform, this.materials.shadow);
         this.shapes.cylinder.draw(context, program_state, tree_shadow_transform, this.materials.shadow);
-        t
+        
+        this.side = Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(300, -5, 200));
 
         if (this.attached != undefined) {
             // Blend desired camera position with existing camera matrix (from previous frame) to smoothly pull camera towards planet 
