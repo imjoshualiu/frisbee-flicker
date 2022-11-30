@@ -97,12 +97,15 @@ export class frisbee_flicker extends Scene {
         this.first_level = true;
 
         //sound effects
-        this.hitAudio = new Audio("./assets/hit.mp3");
-        this.hitAudio.muted = true;
+        this.crowdAudio = new Audio("./assets/crowd.mp3");
+        this.crowdAudio.autoplay = true;
         this.failAudio = new Audio("./assets/fail.mp3");
-        this.failAudio.muted = true;
+        this.failAudio.autoplay = true;
         this.birdsAudio = new Audio("./assets/birds.mp3");
         this.birdsAudio.autoplay = true;
+        this.hitAudio = new Audio("./assets/hit.mp3");
+        this.hitAudio.autoplay = true;
+        this.hittime = 0;
 
 
     }
@@ -306,11 +309,17 @@ export class frisbee_flicker extends Scene {
             return false;
         }
         for (let i = 0; i < this.stage_targets.length; i++) {
-            if (!this.stage_targets[i])
+            if (!this.stage_targets[i]){
+                this.failAudio.pause();
                 return false;
+
+            }
         }
+
         this.completed_time += dt;
         if (this.completed_time > 2) {
+            this.crowdAudio.pause();
+
             console.log("completed time is greater than 2")
             this.current_level++;
             this.start_stage = true;
@@ -513,8 +522,13 @@ export class frisbee_flicker extends Scene {
 
         //create targets
         if (this.current_level == 1) {
+
+            //INTRO
             var levelsmsg = "Are you ready for the challenge?";
             document.getElementById("levels").innerHTML = levelsmsg;
+
+            var submsg = "Become the ultimate frisbee flicker.";
+            document.getElementById("description").innerHTML = submsg;
 
             const element = document.getElementById("myBtn");
 
@@ -533,7 +547,66 @@ export class frisbee_flicker extends Scene {
             console.log(this.first_level)
 
         }
-        if (this.current_level == 2) {
+
+        else if (this.current_level == 2) {
+            //ONE TARGET 
+            var levelsmsg = "Level 1";
+            document.getElementById("levels").innerHTML = levelsmsg;
+
+            var submsg = "Let's start with the basics. Can't be that hard right?";
+            document.getElementById("description").innerHTML = submsg;
+
+            let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+
+            if (this.bodies.length == 0) {
+                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+            }
+            this.birdsAudio.play();
+
+
+            this.bodies[0].emplace(frisbee_transform);
+            this.bodies[1].emplace(target_transform);
+            
+        }
+
+        else if (this.current_level == 3) {
+            //TWO TARGETS
+            var levelsmsg = "Level 2";
+            document.getElementById("levels").innerHTML = levelsmsg;
+
+            var submsg = "Looks like your target made a new friend. Can you eliminate them both?";
+            document.getElementById("description").innerHTML = submsg;
+
+            let target_transform1 = model_transform.times(Mat4.translation(50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            let target_transform2 = model_transform.times(Mat4.translation(-50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
+
+            this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
+
+
+            if (this.bodies.length == 0) {
+                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+            }
+
+            this.bodies[0].emplace(frisbee_transform);
+            this.bodies[1].emplace(target_transform1);
+            this.bodies[2].emplace(target_transform2);
+            this.birdsAudio.play();
+
+        }
+
+        if (this.current_level == 4) {
+            //TREE
+            var levelsmsg = "Level 3";
+            document.getElementById("levels").innerHTML = levelsmsg;
+
+            var submsg = "AH! A tree decided to grow today. What will you do?";
+            document.getElementById("description").innerHTML = submsg;
+
             let target_transform = model_transform.times(Mat4.translation(0, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
             let trunk_transform = model_transform.times(Mat4.translation(0, 0, -150)).times(Mat4.scale(2, 40, 2))
             let leaves_transform = trunk_transform.times(Mat4.translation(0, 0.75, 0)).times(Mat4.scale(10,0.5, 10))
@@ -551,48 +624,10 @@ export class frisbee_flicker extends Scene {
             this.bodies[1].emplace(target_transform);
             this.bodies[2].emplace(trunk_transform);
             this.birdsAudio.play();
-
-            var levelsmsg = "Level 1";
-            document.getElementById("levels").innerHTML = levelsmsg;
-
-            this.check_stage_completion(dt);
-        }
-
-        else if (this.current_level == 3) {
-            //ONE TARGET 
-            let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
-
-            if (this.bodies.length == 0) {
-                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
-                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
-            }
-
-            this.bodies[0].emplace(frisbee_transform);
-            this.bodies[1].emplace(target_transform)
-        }
-        else if (this.current_level == 4) {
-            //TWO TARGETS
-            let target_transform1 = model_transform.times(Mat4.translation(50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            let target_transform2 = model_transform.times(Mat4.translation(-50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
-
-            this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
-            this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
-
-
-            if (this.bodies.length == 0) {
-                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
-                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
-                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
-            }
-
-            this.bodies[0].emplace(frisbee_transform);
-            this.bodies[1].emplace(target_transform1);
-            this.bodies[2].emplace(target_transform2);;
-
-            this.check_stage_completion(dt);
+            
 
         }
+
 
         const points = this.collider.points
         const leeway = this.collider.leeway
@@ -609,8 +644,17 @@ export class frisbee_flicker extends Scene {
                     this.collided = true;
 
                     this.stage_targets[index - 1] = true;
-                    this.birdsAudio.pause();
+                    this.crowdAudio.play();
+
                     this.hitAudio.play();
+
+                    this.hittime += dt;
+                    if (this.hittime>1) {
+                        this.hitAudio.pause();
+
+                    }
+
+
                 }
 
                 index++;
@@ -619,7 +663,7 @@ export class frisbee_flicker extends Scene {
         }
 
         this.check_stage_completion(dt);
-
+       
         //create ground
         let ground_width = 800;
         let ground_depth = 800;
