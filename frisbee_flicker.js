@@ -42,14 +42,14 @@ export class frisbee_flicker extends Scene {
             shadow: new Material(new defs.Phong_Shader(), {color: color(0,0,0,0.75), specularity : 0.0, diffusivity: 0.0}),
             trunk: new Material(new defs.Phong_Shader(),
             {ambient: 1, diffusivity: .2, color: hex_color("#964B00"), specularity: 1}),
-            leaves: new Material(new defs.Phong_Shader(), {ambient: 0.9, diffusivity: 0.8, specularity : 0.5, color: hex_color("#3A5F0B")}),
+            leaves: new Material(new defs.Phong_Shader(), {ambient: 0.9, diffusivity: 0.8, specularity : 0.35, color: hex_color("#3A5F0B")}),
             cloud: new Material(new defs.Phong_Shader(), {color: hex_color("#ffffff"), diffusivity: 0.78, ambient: 0.92}),
             grass: new Material(new defs.Phong_Shader(), {color: hex_color("#18ba51"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
         }
 
-        this.initial_camera_location = Mat4.look_at(vec3(0, 15, 20), vec3(0, 15, 0), vec3(0, 1, 0));
+        this.initial_camera_location = Mat4.look_at(vec3(0, 13, 20), vec3(0, 13, 0), vec3(0, 1, 0));
         this.angle_left = false
         this.angle_right = false
         this.frisbee_angle = 0;
@@ -422,7 +422,7 @@ export class frisbee_flicker extends Scene {
         //model transform creation
         let model_transform = Mat4.identity();
 
-        const light_position = vec4(-10, 20, -100, 1);
+        const light_position = vec4(-10, 20, -40, 1);
         // The parameters of the Light are: position, color, size
         program_state.lights = [new Light(light_position, yellow, 25000)];
 
@@ -527,15 +527,17 @@ export class frisbee_flicker extends Scene {
         }
         if (this.current_level == 2) {
             let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 2));
+            let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             let trunk_transform = model_transform.times(Mat4.translation(0, 0, -150)).times(Mat4.scale(2, 40, 2))
             let leaves_transform = trunk_transform.times(Mat4.translation(0, 0.75, 0)).times(Mat4.scale(10,0.5, 10))
+            let tree_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -150)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(20, 20, 3.75));
             
             this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }));
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform, this.materials.shadow);
             
             this.shapes.trunk.draw(context, program_state, trunk_transform, this.materials.trunk)
             this.shapes.leaves.draw(context, program_state, leaves_transform, this.materials.leaves)
+            this.shapes.cylinder.draw(context, program_state, tree_shadow_transform, this.materials.shadow);
             
 
             if (this.bodies.length == 0) {
@@ -558,7 +560,7 @@ export class frisbee_flicker extends Scene {
         else if (this.current_level == 3) {
             //ONE TARGET 
             let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 2));
+            let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             
             this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform, this.materials.shadow);
@@ -575,8 +577,8 @@ export class frisbee_flicker extends Scene {
             //TWO TARGETS
             let target_transform1 = model_transform.times(Mat4.translation(50, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
             let target_transform2 = model_transform.times(Mat4.translation(-50, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            let target1_shadow_transform = Mat4.identity().times(Mat4.translation(50, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 2));
-            let target2_shadow_transform = Mat4.identity().times(Mat4.translation(-50, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 2));
+            let target1_shadow_transform = Mat4.identity().times(Mat4.translation(50, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
+            let target2_shadow_transform = Mat4.identity().times(Mat4.translation(-50, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             
 
             this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
@@ -956,7 +958,6 @@ export class frisbee_flicker extends Scene {
         }
 
         this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -290)).times(Mat4.scale(15, 14, 10)), this.materials.grass);
-        this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200, 1, -290)).times(Mat4.scale(15, 14, 10)), this.materials.grass_1);
         this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -280)).times(Mat4.scale(15, 16, 10)), this.materials.grass_2);
         this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 + Math.sin(t), 1, -270)).times(Mat4.scale(15, 18, 10)), this.materials.grass);
         this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(200 , 1, -260)).times(Mat4.scale(15, 23, 10)), this.materials.grass);
@@ -966,15 +967,12 @@ export class frisbee_flicker extends Scene {
         //create shadows
         //ground is at y = 0
         //frisbee is at y = ??
-        let frisbee_shadow_transform = Mat4.identity().times(Mat4.translation(this.curve, 0, -this.distance)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(3, 3, 2.5));
+        let frisbee_shadow_transform = Mat4.identity().times(Mat4.translation(this.curve, 0, -this.distance)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(3, 3, 2.75));
         
         // let trunk_transform = model_transform.times(Mat4.translation(0, 0, -150)).times(Mat4.scale(2, 40, 2))
         // let leaves_transform = trunk_transform.times(Mat4.translation(0, 0.75, 0)).times(Mat4.scale(10,0.5, 10))
 
-        let tree_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -150)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(20, 20, 3.5));
-
         this.shapes.cylinder.draw(context, program_state, frisbee_shadow_transform, this.materials.shadow);
-        this.shapes.cylinder.draw(context, program_state, tree_shadow_transform, this.materials.shadow);
         
         this.side = Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(300, -5, 200));
 
