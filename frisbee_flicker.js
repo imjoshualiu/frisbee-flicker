@@ -556,6 +556,12 @@ export class frisbee_flicker extends Scene {
             var submsg = "Let's start with the basics. Can't be that hard right?";
             document.getElementById("description").innerHTML = submsg;
 
+            var velmsg = "Velocity: " + this.velocity;
+            document.getElementById("velocity").innerHTML = velmsg;
+
+            var angmsg = "Angle: " + this.frisbee_angle;
+            document.getElementById("angle").innerHTML = angmsg;
+
             let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
             this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
 
