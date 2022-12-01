@@ -50,10 +50,15 @@ export class frisbee_flicker extends Scene {
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 15, 20), vec3(0, 15, 0), vec3(0, 1, 0));
+        this.wide_camera_location = Mat4.look_at(vec3(200, 15, -350), vec3(-90, 0, 0), vec3(0, 1, 0));
+        this.frisbee_camera_location = this.initial_camera_location;
         this.angle_left = false
         this.angle_right = false
         this.frisbee_angle = 0;
         this.frisbee_angle_display = 0;
+
+        //camera angles
+        this.camera_angle = 1;
 
         //control mechanics
         this.reset = false;
@@ -65,14 +70,17 @@ export class frisbee_flicker extends Scene {
         this.throw = false;
         this.thrown = false;
         this.throw_time = 0;
-        this.throwing_height = 10;
+        this.throwing_height = 13;
         this.throwing_angle = 12;
         this.velocity = 14;
         this.horizontal_velocity = 0;
         this.vertical_velocity = 0;
-        this.frisbee_height = 10;
+        this.frisbee_height = 13;
         this.elapsed_time_prev = 0;
         this.curve = 0;
+        this.negative_frisbee_angle = false;
+        this.spin = true;
+        
 
         //frisbee trail mechanics
         this.frisbee_trail_transforms = [];
@@ -87,6 +95,8 @@ export class frisbee_flicker extends Scene {
         const phong = new defs.Phong_Shader(1);
         this.bright = new Material(phong, { color: color(0, 1, 0, .5), ambient: 1 });
         this.collided = false;
+        this.is_tree = Array(1).fill(false)
+        this.not_hit_tree = true;
 
         //level mechanics
         this.current_level = 1
@@ -95,12 +105,22 @@ export class frisbee_flicker extends Scene {
         this.completed_time = 0;
         this.attempt_count = 0;
         this.first_level = true;
+        // this.wind = Math.floor(Math.random() * (10 + 10) - 10)/50
+        this.wind = 0.001
+        this.wind_total = 0;
+        this.wind_direction = 0;
+        this.cloud_angle = 0;
+        this.current_cloud_angle = 0;
+        this.cloud_rotation_angle = 0;
+        this.target_direction_left = true;
+        this.target_distance = 0;
+        
 
         //sound effects
         this.hitAudio = new Audio("./assets/hit.mp3");
-        this.hitAudio.muted = true;
+        this.hitAudio.muted = false;
         this.failAudio = new Audio("./assets/fail.mp3");
-        this.failAudio.muted = true;
+        this.failAudio.muted = false;
         this.birdsAudio = new Audio("./assets/birds.mp3");
         this.birdsAudio.autoplay = true;
 
@@ -123,12 +143,15 @@ export class frisbee_flicker extends Scene {
         this.new_line()
         this.key_triggered_button("Increase Velocity", ["="], () => this.increase_velocity = true);
         this.key_triggered_button("Decrease Velocity", ["-"], () => this.decrease_velocity = true);
+        this.key_triggered_button("Default Camera Angle", ["1"], () => this.camera_angle = 1);
+        this.key_triggered_button("Frisbee Camera Angle", ["2"], () => this.camera_angle = 2);
         this.new_line();
         this.new_line();
         this.live_string(box => box.textContent = "- Current Level: " + this.current_level);
         this.new_line();
         this.live_string(box => box.textContent = "- Number of Attempts: " + this.attempt_count);
         this.new_line();
+        
         //this.key_triggered_button("Attach to cloud", ["Control", "1"], () => this.attached = () => this.cloud);
     }
 
@@ -174,8 +197,8 @@ export class frisbee_flicker extends Scene {
         let lift_force = 0.5 * (air_density) * (velocity ** 2) * area * lift_coefficient
 
         //account for angled throw
-        if (this.frisbee_angle > 0) {
-            lift_force = lift_force / (1 + 1.5 * Math.abs(Math.sin(this.frisbee_angle * Math.PI / 180)))
+        if (Math.abs(this.frisbee_angle) > 0) {
+            lift_force = lift_force * (1 + 1.1 * Math.sin(Math.abs(this.frisbee_angle) * Math.PI / 180))
         }
         return lift_force
     }
@@ -219,12 +242,9 @@ export class frisbee_flicker extends Scene {
     }
 
     calculate_arc(time) {
-        let process_angle = this.frisbee_angle
-        if (this.frisbee_angle > 45) {
-            process_angle = 90 - this.frisbee_angle;
-            if (this.frisbee_angle < 0) {
-                process_angle = -90 - this.frisbee_angle
-            }
+        let process_angle = Math.abs(this.frisbee_angle)
+        if (Math.abs(this.frisbee_angle) > 45) {
+            process_angle = 90 - Math.abs(this.frisbee_angle);
         }
 
         let curve_angle = (process_angle) / 180 * Math.PI
@@ -245,8 +265,25 @@ export class frisbee_flicker extends Scene {
         // else{
         //     this.curve = arc_calculation
         // }
-
+        
         this.curve = arc_calculation
+        
+        if(this.frisbee_angle < 0){
+            this.curve *= -1;
+        }
+        if(this.current_level == 5){
+            if(this.wind_direction==1){
+                this.curve += ((2*( time) ** 2));
+            }
+            if(this.wind_direction==0){
+                this.curve -= ((2*( time) ** 2));
+            }
+            
+            this.wind_total += this.wind;
+            console.log(this.wind_total)
+            console.log(this.curve)
+        }
+
 
     }
 
@@ -269,13 +306,30 @@ export class frisbee_flicker extends Scene {
             if (this.current_level == 2) {
                 this.stage_targets = Array(1).fill(false)
                 this.target_color = Array(1).fill(red)
+                this.is_tree = [false, false]
             }
 
             if (this.current_level == 3) {
                 this.stage_targets = Array(2).fill(false)
                 this.target_color = Array(2).fill(red)
+                this.is_tree = [false, false, false]
             }
-
+            if (this.current_level == 4) {
+                this.stage_targets = Array(1).fill(false)
+                this.target_color = Array(1).fill(red)
+                this.is_tree = [false, false, true]
+            }
+            if (this.current_level == 5) {
+                this.stage_targets = Array(2).fill(false)
+                this.target_color = Array(2).fill(red)
+                this.is_tree = [false, false, false]
+            }
+            if (this.current_level == 6) {
+                this.stage_targets = Array(1).fill(false)
+                this.target_color = Array(1).fill(red)
+                this.is_tree = [false, false]
+            }
+            console.log(this.stage_targets)
             this.start_stage = false;
         }
     }
@@ -287,7 +341,7 @@ export class frisbee_flicker extends Scene {
             this.frisbee_angle = 0;
             this.distance = 0;
             this.throw_time = 0;
-            this.frisbee_height = 10;
+            this.frisbee_height = 13;
             this.vertical_velocity = 0;
             this.horizontal_velocity = 0;
             this.elapsed_time_prev = 0;
@@ -297,6 +351,21 @@ export class frisbee_flicker extends Scene {
             // this.target_color = red; //need to fix
             this.collided = false;
             this.bodies = []
+            this.throwing_angle = 12;
+            this.not_hit_tree = true;
+            this.wind_total = 0;
+            this.spin = true;
+            if(this.current_level==5){
+                if(Math.floor(Math.random() * (10 + 10) - 10)<0){
+                    this.wind_direction=0;
+                }
+                else{
+                    this.wind_direction=1;
+                }
+                this.cloud_angle = this.current_cloud_angle;
+                this.cloud_rotation_angle = 0;
+            }
+            
         }
 
     }
@@ -313,6 +382,10 @@ export class frisbee_flicker extends Scene {
         if (this.completed_time > 2) {
             console.log("completed time is greater than 2")
             this.current_level++;
+            if(this.current_level==7){
+                this.current_level = 1
+                
+            }
             this.start_stage = true;
             this.reset = true;
             this.completed_time = 0;
@@ -359,48 +432,49 @@ export class frisbee_flicker extends Scene {
         let horizontal_acceleration = -drag_force/mass
         
         this.horizontal_velocity = this.horizontal_velocity + 0.5*(horizontal_acceleration * time)
+        // console.log("horizontal velocity: ", this.horizontal_velocity, "vertical velocity: ", this.vertical_velocity)
     }
 
-    calculate_arc(time){
+    // calculate_arc(time){
 
-        let process_angle = this.frisbee_angle
-        if(this.frisbee_angle > 45){
-            process_angle = 90 - this.frisbee_angle; 
-            if(this.frisbee_angle < 0){
-                process_angle = -90 - this.frisbee_angle 
-            }
-        }
+    //     let process_angle = this.frisbee_angle
+    //     if(this.frisbee_angle > 45){
+    //         process_angle = 90 - this.frisbee_angle; 
+    //         if(this.frisbee_angle < 0){
+    //             process_angle = -90 - this.frisbee_angle 
+    //         }
+    //     }
         
-        let curve_angle = (process_angle)/180*Math.PI
-        curve_angle = Math.round((curve_angle + Number.EPSILON) * 1000) / 1000
+    //     let curve_angle = (process_angle)/180*Math.PI
+    //     curve_angle = Math.round((curve_angle + Number.EPSILON) * 1000) / 1000
 
-        console.log("curve angle:" , curve_angle)
-        console.log("frisbee angle:" , this.frisbee_angle)
+    //     console.log("curve angle:" , curve_angle)
+    //     console.log("frisbee angle:" , this.frisbee_angle)
 
-        let arc_calculation = (Math.sin(curve_angle))*(-((2*time-10)**2)+100)
+    //     let arc_calculation = (Math.sin(curve_angle))*(-((2*time-10)**2)+100)
 
-        arc_calculation = Math.round((arc_calculation + Number.EPSILON) * 1000) / 1000
-        console.log("arc calculation:" , arc_calculation)
+    //     arc_calculation = Math.round((arc_calculation + Number.EPSILON) * 1000) / 1000
+    //     console.log("arc calculation:" , arc_calculation)
 
-        // if((this.curve < 0 &&  this.arc_calculation > 0) || (this.curve > 0 && this.arc_calculation < 0) ){
-        //     this.curve = 0
-        // }
-        // else{
-        //     this.curve = arc_calculation
-        // }
+    //     // if((this.curve < 0 &&  this.arc_calculation > 0) || (this.curve > 0 && this.arc_calculation < 0) ){
+    //     //     this.curve = 0
+    //     // }
+    //     // else{
+    //     //     this.curve = arc_calculation
+    //     // }
 
-        this.curve = arc_calculation
+    //     this.curve = arc_calculation
         
-    }
+    // }
 
     update_fribsee_angle(){
         if(this.frisbee_angle < 0){
-            this.frisbee_angle+=(1/25);
+            this.frisbee_angle+=(0/25);
             // if(this.frisbee_angle>=0){
             //     this.frisbee_angle = 0
             // }
         } else{
-            this.frisbee_angle-=(1/25);
+            this.frisbee_angle-=(0/25);
             // if(this.frisbee_angle<=0){
             //     this.frisbee_angle = 0
             // }
@@ -415,7 +489,11 @@ export class frisbee_flicker extends Scene {
             // Define the global camera and projection matrices, which are stored in program_state.
             console.log(this.initial_camera_location)
             program_state.set_camera(this.initial_camera_location);
+            
+            
         }
+
+
 
         program_state.projection_transform = Mat4.perspective(
             Math.PI / 4, context.width / context.height, .1, 1000);
@@ -423,6 +501,9 @@ export class frisbee_flicker extends Scene {
         const t = program_state.animation_time / 1000, dt = program_state.animation_delta_time / 1000;
 
         this.set_stage()
+
+        
+        
 
         //model transform creation
         let model_transform = Mat4.identity();
@@ -438,13 +519,16 @@ export class frisbee_flicker extends Scene {
         this.decrease_vel();
 
         let frisbee_transform = model_transform
-        // console.log(this.frisbee_angle)
+        
 
         if (this.throw) {
             this.thrown = true;
             this.throw = false;
             this.horizontal_velocity = this.velocity * Math.cos(this.throwing_angle_rad())
             this.vertical_velocity = this.velocity * Math.sin(this.throwing_angle_rad())
+            if (Math.abs(this.frisbee_angle) > 0) {
+                this.horizontal_velocity = this.horizontal_velocity / (1 + 1.1 * Math.sin(Math.abs(this.frisbee_angle) * Math.PI / 180))
+            }
             this.throw_time = t;
             this.frisbee_height = this.throwing_height
             this.attempt_count++;
@@ -474,31 +558,50 @@ export class frisbee_flicker extends Scene {
             let time = elapsed_time - this.elapsed_time_prev
             this.calculate_distance(this.throwing_angle_rad(), time)
 
-            this.distance += (this.horizontal_velocity * time) * 8
+            this.distance += (this.horizontal_velocity * time)*8
             this.frisbee_height += (this.vertical_velocity * time)
 
-            if (this.frisbee_height < 0) {
-                this.frisbee_height = 0;
+            if (this.frisbee_height < 0.5) {
+                this.frisbee_height = 0.5;
                 this.thrown = false;
                 // this.reset = true;
             }
-
+            //calculate arc offset
             this.calculate_arc(elapsed_time)
 
+            //calculate update angle of frisbee
+            // this.throwing_angle = Math.atan(this.vertical_velocity/(this.horizontal_velocity*8))
+            // console.log(this.throwing_angle*180/Math.PI)
+            
+            
+
             frisbee_transform = frisbee_transform.times(Mat4.translation(this.curve, this.frisbee_height, -this.distance))
+            
+            this.frisbee_camera_location = frisbee_transform;
+            
             //.times(Mat4.rotation(this.distance/45*Math.PI,0,1,0))
+            
             this.elapsed_time_prev = elapsed_time
             this.update_fribsee_angle()
 
+            let spin = 2*Math.PI;
+            if(this.spin){
+                spin = 18*t
+            }
+
             this.frisbee_trail_transforms.push(frisbee_transform.times(Mat4.scale(0.2, 0.2, 0.2)))
-            frisbee_transform = frisbee_transform.times(Mat4.rotation(Math.PI / 2, 1, 0, 0)).times(Mat4.rotation(this.frisbee_angle / 180 * Math.PI, 0, 1, 0)).times(Mat4.rotation(Math.PI / 180, 0, 0, 1))
+            frisbee_transform = frisbee_transform.times(Mat4.rotation(Math.PI / 2, 1, 0, 0)).times(Mat4.rotation(this.frisbee_angle / 180 * Math.PI, 0, 1, 0)).times(Mat4.rotation(Math.PI / 180, 0, 0, 1)).times(Mat4.rotation(spin, 0, 0, 1))
+            // .times(Mat4.rotation(Math.atan(this.vertical_velocity/(this.horizontal_velocity*8)), 1, 0, 0))
         }
         else {
             // console.log(this.distance)
+            
             frisbee_transform = frisbee_transform.times(Mat4.translation(this.curve, this.frisbee_height, -this.distance))
             frisbee_transform = frisbee_transform.times(Mat4.rotation(Math.PI / 2, 1, 0, 0)).times(Mat4.rotation(this.frisbee_angle / 180 * Math.PI, 0, 1, 0))
             //console.log("test")
         }
+
+        
 
         frisbee_transform = frisbee_transform.times(frisbee_scale)
         this.shapes.frisbee.draw(context, program_state, frisbee_transform, this.materials.test.override({ color: yellow, ambient: 1 }));
@@ -520,24 +623,24 @@ export class frisbee_flicker extends Scene {
 
             function myFunction() {
                 element.remove();
-                // console.log("test")
+                
                 first_level = false;
             }
 
             if(element){
-                console.log(this.current_level)
                 
                 element.addEventListener("click", myFunction);
                 
             }
-            console.log(this.first_level)
+           
 
         }
-        if (this.current_level == 2) {
-            let target_transform = model_transform.times(Mat4.translation(0, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
+        if (this.current_level == 4) {
+            let target_transform = model_transform.times(Mat4.translation(0, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
             let trunk_transform = model_transform.times(Mat4.translation(0, 0, -150)).times(Mat4.scale(2, 40, 2))
             let leaves_transform = trunk_transform.times(Mat4.translation(0, 0.75, 0)).times(Mat4.scale(10,0.5, 10))
             
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
             this.shapes.trunk.draw(context, program_state, trunk_transform, this.materials.trunk)
             this.shapes.leaves.draw(context, program_state, leaves_transform, this.materials.leaves)
 
@@ -555,12 +658,12 @@ export class frisbee_flicker extends Scene {
             var levelsmsg = "Level 1";
             document.getElementById("levels").innerHTML = levelsmsg;
 
-            this.check_stage_completion(dt);
+            
         }
 
-        else if (this.current_level == 3) {
+        else if (this.current_level == 2) {
             //ONE TARGET 
-            let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            let target_transform = model_transform.times(Mat4.translation(0, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
             this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
 
             if (this.bodies.length == 0) {
@@ -571,10 +674,10 @@ export class frisbee_flicker extends Scene {
             this.bodies[0].emplace(frisbee_transform);
             this.bodies[1].emplace(target_transform)
         }
-        else if (this.current_level == 4) {
+        else if (this.current_level == 3) {
             //TWO TARGETS
-            let target_transform1 = model_transform.times(Mat4.translation(50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            let target_transform2 = model_transform.times(Mat4.translation(-50, 0, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
+            let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
 
             this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
             this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
@@ -590,31 +693,93 @@ export class frisbee_flicker extends Scene {
             this.bodies[1].emplace(target_transform1);
             this.bodies[2].emplace(target_transform2);;
 
-            this.check_stage_completion(dt);
+            
 
         }
+        else if (this.current_level == 5) {
+            //TWO TARGETS WITH WIND
+            let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
+            let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
+
+            this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
+
+
+            if (this.bodies.length == 0) {
+                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+            }
+
+            this.bodies[0].emplace(frisbee_transform);
+            this.bodies[1].emplace(target_transform1);
+            this.bodies[2].emplace(target_transform2);;
+
+            
+
+        }
+        else if (this.current_level == 6) {
+            //MOVING TARGET
+            
+            if(Math.abs(this.target_distance) > 30){
+                this.target_direction_left = !this.target_direction_left;
+            }
+            this.target_distance  = 100*Math.sin(1.2*t)
+            console.log(this.target_distance)
+            let target_transform = model_transform.times(Mat4.translation(this.target_distance, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+            
+
+
+            
+            if (this.bodies.length == 0) {
+                this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
+                this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
+            }
+
+            this.bodies[0].emplace(frisbee_transform);
+            this.bodies[1].emplace(target_transform)
+        }
+        
 
         const points = this.collider.points
         const leeway = this.collider.leeway
         const size = vec3(1 + leeway, 1 + leeway, 1 + leeway);
+        let index = 0
         for (let a of this.bodies) {
 
             points.draw(context, program_state, (a.location_matrix).times(Mat4.scale(...size)), this.bright, "LINE_STRIP");
-            let index = 0
+            
             for (let b of this.bodies) {
                 if (a.check_if_colliding(b, this.collider)) {
-                    console.log("collided")
+                    
+                    console.log(a,b)
+                    console.log("collided ", index)
                     this.horizontal_velocity = 0;
-                    this.target_color[index - 1] = forest_green;
+                    this.curve = 0;
+
+                    this.target_color[index-1] = forest_green;
                     this.collided = true;
+                    this.spin = false;
+                    this.stage_targets[index-1] = true;
+                    
+                    if(!this.is_tree[index]){
+                        this.hitAudio.play();
+                        
+                    }
 
-                    this.stage_targets[index - 1] = true;
-                    this.birdsAudio.pause();
-                    this.hitAudio.play();
+                    if(this.is_tree[index] && this.not_hit_tree){
+                        this.failAudio.play();
+                        this.not_hit_tree = false;
+                    }
+                    
+                    console.log(this.stage_targets)
                 }
+                
 
-                index++;
+                
             }
+            index++;
 
         }
 
@@ -634,7 +799,16 @@ export class frisbee_flicker extends Scene {
         this.shapes.sky.draw(context, program_state, sky_transform, this.materials.sky);
         
         //create clouds
-        let rotation_speed = 0.01 * t;
+        let rotation_speed = this.cloud_angle;
+        if(this.wind_direction==0){
+            rotation_speed += (0.01 * this.cloud_rotation_angle)
+        }
+        if(this.wind_direction==1){
+            rotation_speed -= (0.01 * this.cloud_rotation_angle)
+        }
+        this.current_cloud_angle = rotation_speed;
+        this.cloud_rotation_angle += dt;
+        
         let layer_1_constant = 1;
         let layer_2_constant = 1.4;
         let layer_3_constant = 1.8;
@@ -821,40 +995,40 @@ export class frisbee_flicker extends Scene {
         let grass_transform = Mat4.identity().times(Mat4.translation(0, 1, -50)).times(Mat4.scale(15, 7, 10));
         //this.shapes.grass.draw(context, program_state, grass_transform, this.materials.grass);
         
-        for(var i = 3; i < 30; i += 1)
-        {
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
-            this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
-        }
+        // for(var i = 3; i < 30; i += 1)
+        // {
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(30, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-30, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-60, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(90 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-90, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(120, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-120, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(150, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-150 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(180 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-180, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(210, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-210, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-240, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(270 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-270, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(300, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-300 + Math.sin(t), 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(330, 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-330, 1, -(1.35**i) - 3.1 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(360, 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-360, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(390 + Math.sin(t), 1, -(1.35**i) - 1.05 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-390, 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass_2);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(420, 1, -(1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-420 + Math.sin(t), 1, -(1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(450, 1, -(1.35**i) - 1.05 * (1.35**i) + Math.sin(t))).times(Mat4.scale(15, 10, 10)), this.materials.grass_1);
+        //     this.shapes.grass.draw(context, program_state, Mat4.identity().times(Mat4.translation(-450 + Math.sin(t), 1, -(1.35**i) - 3.1 * (1.35**i))).times(Mat4.scale(15, 10, 10)), this.materials.grass);
+        // }
 
         // for(var i = 0; i < 30; i += 1)
         // {
