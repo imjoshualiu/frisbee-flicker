@@ -749,10 +749,10 @@ export class frisbee_flicker extends Scene {
         }
         else if (this.current_level == 5) {
             //TWO TARGETS WITH WIND
-            var levelsmsg = "Level 3";
+            var levelsmsg = "Level 4";
             document.getElementById("levels").innerHTML = levelsmsg;
 
-            var submsg = "AH! A tree decided to grow today. What will you do?";
+            var submsg = "BRRR It's feeling a little cold today. Do you see the wind blowing the clouds?";
             document.getElementById("description").innerHTML = submsg;
 
             var velmsg = "Velocity: " + this.velocity;
@@ -784,10 +784,10 @@ export class frisbee_flicker extends Scene {
         else if (this.current_level == 6) {
             //MOVING TARGET
             
-            var levelsmsg = "Level 3";
+            var levelsmsg = "Level 5";
             document.getElementById("levels").innerHTML = levelsmsg;
 
-            var submsg = "AH! A tree decided to grow today. What will you do?";
+            var submsg = "Catch me if you can!";
             document.getElementById("description").innerHTML = submsg;
 
             var velmsg = "Velocity: " + this.velocity;
@@ -805,8 +805,6 @@ export class frisbee_flicker extends Scene {
             this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
             
 
-
-            
             if (this.bodies.length == 0) {
                 this.bodies.push(new Body(this.shapes.frisbee, this.materials.test.override({ color: red, ambient: 1 }), vec3(3, 3, 1 / 2)))
                 this.bodies.push(new Body(this.shapes.target, this.materials.test.override({ color: red, ambient: 1 }), vec3(5, 5, 1 / 2)))
