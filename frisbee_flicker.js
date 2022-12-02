@@ -103,7 +103,7 @@ export class frisbee_flicker extends Scene {
         this.not_hit_tree = true;
 
         //level mechanics
-        this.current_level = 4
+        this.current_level = 1
         this.stage_targets = []
         this.start_stage = true;
         this.completed_time = 0;
