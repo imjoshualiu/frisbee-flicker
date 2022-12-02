@@ -705,8 +705,8 @@ export class frisbee_flicker extends Scene {
             this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
             this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
 
-            let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 10, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
-            let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 10, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
+            let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
+            let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform1, this.materials.shadow);
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform2, this.materials.shadow);
 
