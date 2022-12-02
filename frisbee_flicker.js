@@ -3,7 +3,7 @@ import { Body } from './collision.js';
 
 
 const {
-    Vector, Vector3, vec, vec3, vec4, color, hex_color, Shader, Matrix, Mat4, Light, Shape, Material, Scene,
+    Vector, Vector3, vec, vec3, vec4, color, hex_color, Shader, Matrix, Mat4, Light, Shape, Material, Scene, Texture
 } = tiny;
 
 let first_level = true;
@@ -13,6 +13,7 @@ var yellow = hex_color("#fac91a");
 var red = hex_color("#FF0000");
 var green = hex_color("#00FF00");
 var forest_green = hex_color("#00cc00")
+var black = hex_color("#000000")
 
 export class frisbee_flicker extends Scene {
     constructor() {
@@ -48,9 +49,10 @@ export class frisbee_flicker extends Scene {
             grass: new Material(new defs.Phong_Shader(), {color: hex_color("#18ba51"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
+            target_textured: new Material(new defs.Textured_Phong(), {ambient: 1, texture: new Texture("assets/target.png")}),
         }
 
-        this.initial_camera_location = Mat4.look_at(vec3(0, 14.5, 20), vec3(0, 14.5, 0), vec3(0, 1, 0));
+        this.initial_camera_location = Mat4.look_at(vec3(0, 14.7, 20), vec3(0, 14.7, 0), vec3(0, 1, 0));
         this.wide_camera_location = Mat4.look_at(vec3(200, 15, -350), vec3(-90, 0, 0), vec3(0, 1, 0));
         this.frisbee_camera_location = this.initial_camera_location;
         this.angle_left = false
@@ -311,28 +313,28 @@ export class frisbee_flicker extends Scene {
         if (this.start_stage) {
             if (this.current_level == 2) {
                 this.stage_targets = Array(1).fill(false)
-                this.target_color = Array(1).fill(red)
+                this.target_color = Array(1).fill(black)
                 this.is_tree = [false, false]
             }
 
             if (this.current_level == 3) {
                 this.stage_targets = Array(2).fill(false)
-                this.target_color = Array(2).fill(red)
+                this.target_color = Array(2).fill(black)
                 this.is_tree = [false, false, false]
             }
             if (this.current_level == 4) {
                 this.stage_targets = Array(1).fill(false)
-                this.target_color = Array(1).fill(red)
+                this.target_color = Array(1).fill(black)
                 this.is_tree = [false, false, true]
             }
             if (this.current_level == 5) {
                 this.stage_targets = Array(2).fill(false)
-                this.target_color = Array(2).fill(red)
+                this.target_color = Array(2).fill(black)
                 this.is_tree = [false, false, false]
             }
             if (this.current_level == 6) {
                 this.stage_targets = Array(1).fill(false)
-                this.target_color = Array(1).fill(red)
+                this.target_color = Array(1).fill(black)
                 this.is_tree = [false, false]
             }
             console.log(this.stage_targets)
@@ -668,7 +670,7 @@ export class frisbee_flicker extends Scene {
             document.getElementById("angle").innerHTML = angmsg;
 
             let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.target_textured.override({color: this.target_color[0]}))
 
             let target_shadow_transform = Mat4.identity().times(Mat4.translation(0, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform, this.materials.shadow);
@@ -702,8 +704,8 @@ export class frisbee_flicker extends Scene {
             let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
             let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
 
-            this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
-            this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform1, this.materials.target_textured.override({color: this.target_color[0]}))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[0]}))
 
             let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
@@ -742,6 +744,8 @@ export class frisbee_flicker extends Scene {
             let trunk_transform = model_transform.times(Mat4.translation(0, 0, -150)).times(Mat4.scale(2, 40, 2))
             let leaves_transform = trunk_transform.times(Mat4.translation(0, 0.75, 0)).times(Mat4.scale(10,0.5, 10))
             
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.target_textured.override({color: this.target_color[0]}))
+
             this.shapes.trunk.draw(context, program_state, trunk_transform, this.materials.trunk)
             this.shapes.leaves.draw(context, program_state, leaves_transform, this.materials.leaves)
 
@@ -781,8 +785,8 @@ export class frisbee_flicker extends Scene {
             let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
             let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
 
-            this.shapes.target.draw(context, program_state, target_transform1, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
-            this.shapes.target.draw(context, program_state, target_transform2, this.materials.test.override({ color: this.target_color[1], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform1, this.materials.target_textured.override({color: this.target_color[0]}))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[0]}))
             
             let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
@@ -824,7 +828,7 @@ export class frisbee_flicker extends Scene {
             this.target_distance  = 100*Math.sin(1.2*t)
             console.log(this.target_distance)
             let target_transform = model_transform.times(Mat4.translation(this.target_distance, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
-            this.shapes.target.draw(context, program_state, target_transform, this.materials.test.override({ color: this.target_color[0], ambient: 1 }))
+            this.shapes.target.draw(context, program_state, target_transform, this.materials.target_textured.override({color: this.target_color[0]}))
             
             let target_shadow_transform = Mat4.identity().times(Mat4.translation(this.target_distance, 0, -400)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             this.shapes.cylinder.draw(context, program_state, target_shadow_transform, this.materials.shadow);
