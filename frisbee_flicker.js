@@ -53,7 +53,7 @@ export class frisbee_flicker extends Scene {
             frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, specularity: 0.2, texture: new Texture("assets/ucla_logo.png")}),
         }
 
-        this.initial_camera_location = Mat4.look_at(vec3(0, 17, 20), vec3(0, 15.5, 0), vec3(0, 1, 0));
+        this.initial_camera_location = Mat4.look_at(vec3(0, 18, 20), vec3(0, 17, 0), vec3(0, 1, 0));
         this.wide_camera_location = Mat4.look_at(vec3(200, 15, -350), vec3(-90, 0, 0), vec3(0, 1, 0));
         this.frisbee_camera_location = this.initial_camera_location;
         this.angle_left = false
@@ -1257,7 +1257,7 @@ export class frisbee_flicker extends Scene {
 
         this.shapes.cylinder.draw(context, program_state, frisbee_shadow_transform, this.materials.shadow);
         
-        this.default = Mat4.look_at(vec3(0, 17, 20), vec3(0, 15.5, 0), vec3(0, 1, 0));
+        this.default = Mat4.look_at(vec3(0, 18, 20), vec3(0, 17, 0), vec3(0, 1, 0));
         this.side = Mat4.identity().times(Mat4.rotation(Math.PI/2, 0, 1, 0)).times(Mat4.translation(300, -5, 200));
 
         if (this.attached != undefined) {
