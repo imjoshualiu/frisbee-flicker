@@ -43,7 +43,7 @@ export class frisbee_flicker extends Scene {
             sky: new Material(new defs.Phong_Shader(), {ambient: 1, color: hex_color("#1da4de")}),
             shadow: new Material(new defs.Phong_Shader(), {color: color(0,0,0,0.75), specularity : 0.0, diffusivity: 0.0}),
             trunk: new Material(new defs.Phong_Shader(),
-            {ambient: 1, diffusivity: .2, color: hex_color("#964B00"), specularity: 1}),
+            {ambient: 0.9, diffusivity: 0.8, specularity : 0.35, color: hex_color("#964B00")}),
             leaves: new Material(new defs.Phong_Shader(), {ambient: 0.9, diffusivity: 0.8, specularity : 0.35, color: hex_color("#3A5F0B")}),
             cloud: new Material(new defs.Phong_Shader(), {color: hex_color("#ffffff"), diffusivity: 0.78, ambient: 0.92}),
             grass: new Material(new defs.Phong_Shader(), {color: hex_color("#18ba51"), ambient: .7, diffusivity: .5, specularity: .5 } ),
@@ -102,7 +102,7 @@ export class frisbee_flicker extends Scene {
         this.not_hit_tree = true;
 
         //level mechanics
-        this.current_level = 1
+        this.current_level = 4
         this.stage_targets = []
         this.start_stage = true;
         this.completed_time = 0;
