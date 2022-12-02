@@ -39,7 +39,7 @@ export class frisbee_flicker extends Scene {
             test: new Material(new defs.Phong_Shader(),
                 {ambient: .4, diffusivity: .6, color: hex_color("#ffffff")}),
             ground: new Material(new defs.Phong_Shader(), {color: hex_color("#23cc5e"), ambient: 0.8}),
-            frisbee: new Material(new defs.Phong_Shader(), {color: yellow, ambient: 1, diffusivity: 0.8, specularity: 0.2}),
+            frisbee: new Material(new defs.Phong_Shader(), {color: yellow, ambient: 1, diffusivity: 0.8, specularity: 0.2, texture: new Texture("assets/frisbee_ucla.png")}),
             sky: new Material(new defs.Phong_Shader(), {ambient: 1, color: hex_color("#1da4de")}),
             shadow: new Material(new defs.Phong_Shader(), {color: color(0,0,0,0.75), specularity : 0.0, diffusivity: 0.0}),
             trunk: new Material(new defs.Phong_Shader(),
@@ -50,7 +50,7 @@ export class frisbee_flicker extends Scene {
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             target_textured: new Material(new defs.Textured_Phong(), {ambient: 1, texture: new Texture("assets/target.png")}),
-            frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, texture: new Texture("assets/ucla_logo.png")}),
+            frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, texture: new Texture("assets/logo_frisbee.jpg")}),
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 14.7, 20), vec3(0, 14.7, 0), vec3(0, 1, 0));
@@ -523,7 +523,7 @@ export class frisbee_flicker extends Scene {
         //model transform creation
         let model_transform = Mat4.identity();
 
-        const light_position = vec4(-10, 20, -40, 1);
+        const light_position = vec4(-10, 200, -40, 1);
         // The parameters of the Light are: position, color, size
         program_state.lights = [new Light(light_position, yellow, 25000)];
 
@@ -706,7 +706,7 @@ export class frisbee_flicker extends Scene {
             let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
 
             this.shapes.target.draw(context, program_state, target_transform1, this.materials.target_textured.override({color: this.target_color[0]}))
-            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[0]}))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[1]}))
 
             let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
@@ -787,7 +787,7 @@ export class frisbee_flicker extends Scene {
             let target_transform2 = model_transform.times(Mat4.translation(-50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
 
             this.shapes.target.draw(context, program_state, target_transform1, this.materials.target_textured.override({color: this.target_color[0]}))
-            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[0]}))
+            this.shapes.target.draw(context, program_state, target_transform2, this.materials.target_textured.override({color: this.target_color[1]}))
             
             let target_shadow_transform1 = Mat4.identity().times(Mat4.translation(50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
             let target_shadow_transform2 = Mat4.identity().times(Mat4.translation(-50, 0, -310)).times(Mat4.rotation(Math.PI/2,1,0,0)).times(Mat4.scale(5, 5, 3.75));
@@ -827,7 +827,7 @@ export class frisbee_flicker extends Scene {
                 this.target_direction_left = !this.target_direction_left;
             }
             this.target_distance  = 100*Math.sin(1.2*t)
-            console.log(this.target_distance)
+            
             let target_transform = model_transform.times(Mat4.translation(this.target_distance, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
             this.shapes.target.draw(context, program_state, target_transform, this.materials.target_textured.override({color: this.target_color[0]}))
             
@@ -859,10 +859,13 @@ export class frisbee_flicker extends Scene {
                     console.log(a,b)
                     console.log("collided ", index)
                     this.horizontal_velocity = 0;
-                    this.curve = 0;
-
+                    
                     this.stage_targets[index - 1] = true;
-                    this.crowdAudio.play();
+                    if(!this.is_tree[index]){
+                        this.crowdAudio.play();
+                        
+                    }
+                    
 
                     this.hitAudio.play();
 
