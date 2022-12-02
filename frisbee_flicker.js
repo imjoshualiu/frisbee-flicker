@@ -50,6 +50,7 @@ export class frisbee_flicker extends Scene {
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             target_textured: new Material(new defs.Textured_Phong(), {ambient: 1, texture: new Texture("assets/target.png")}),
+            frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, texture: new Texture("assets/ucla_logo.png")}),
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 14.7, 20), vec3(0, 14.7, 0), vec3(0, 1, 0));
@@ -102,7 +103,7 @@ export class frisbee_flicker extends Scene {
         this.not_hit_tree = true;
 
         //level mechanics
-        this.current_level = 4
+        this.current_level = 1
         this.stage_targets = []
         this.start_stage = true;
         this.completed_time = 0;
@@ -618,7 +619,7 @@ export class frisbee_flicker extends Scene {
         
 
         frisbee_transform = frisbee_transform.times(frisbee_scale)
-        this.shapes.frisbee.draw(context, program_state, frisbee_transform, this.materials.frisbee);
+        this.shapes.frisbee.draw(context, program_state, frisbee_transform, this.materials.frisbee_textured);
 
         //draw frisbee trail
         if (this.show_trail) {
