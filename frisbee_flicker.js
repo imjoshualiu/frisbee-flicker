@@ -14,6 +14,7 @@ var red = hex_color("#FF0000");
 var green = hex_color("#00FF00");
 var forest_green = hex_color("#00cc00")
 var black = hex_color("#000000")
+var white = hex_color("#FFFFFF")
 
 export class frisbee_flicker extends Scene {
     constructor() {
@@ -50,7 +51,7 @@ export class frisbee_flicker extends Scene {
             grass_1: new Material(new defs.Phong_Shader(), {color: hex_color("#59c756"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             grass_2: new Material(new defs.Phong_Shader(), {color: hex_color("#02a83c"), ambient: .7, diffusivity: .5, specularity: .5 } ),
             target_textured: new Material(new defs.Textured_Phong(), {ambient: 1, texture: new Texture("assets/target.png")}),
-            frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, texture: new Texture("assets/logo_frisbee.jpg")}),
+            frisbee_textured: new Material(new defs.Textured_Phong(), {color: hex_color("#000000"), ambient: 1, texture: new Texture("assets/frisbee_texture3.jpg")}),
         }
 
         this.initial_camera_location = Mat4.look_at(vec3(0, 14.7, 20), vec3(0, 14.7, 0), vec3(0, 1, 0));
@@ -604,7 +605,7 @@ export class frisbee_flicker extends Scene {
                 spin = 18*t
             }
 
-            this.frisbee_trail_transforms.push(frisbee_transform.times(Mat4.scale(0.2, 0.2, 0.2)))
+            this.frisbee_trail_transforms.push(frisbee_transform.times(Mat4.scale(0.5, 0.5, 0.5)))
             frisbee_transform = frisbee_transform.times(Mat4.rotation(Math.PI / 2, 1, 0, 0)).times(Mat4.rotation(this.frisbee_angle / 180 * Math.PI, 0, 1, 0)).times(Mat4.rotation(Math.PI / 180, 0, 0, 1)).times(Mat4.rotation(spin, 0, 0, 1))
             // .times(Mat4.rotation(Math.atan(this.vertical_velocity/(this.horizontal_velocity*8)), 1, 0, 0))
         }
@@ -624,7 +625,7 @@ export class frisbee_flicker extends Scene {
         //draw frisbee trail
         if (this.show_trail) {
             for (let i = 0; i < this.frisbee_trail_transforms.length; i++) {
-                this.shapes.sphere.draw(context, program_state, this.frisbee_trail_transforms[i], this.materials.test.override({ color: yellow, ambient: 1 }));
+                this.shapes.sphere.draw(context, program_state, this.frisbee_trail_transforms[i], this.materials.test.override({ color: white, ambient: 1 }));
             }
 
         }
@@ -851,7 +852,7 @@ export class frisbee_flicker extends Scene {
         let index = 0
         for (let a of this.bodies) {
 
-            points.draw(context, program_state, (a.location_matrix).times(Mat4.scale(...size)), this.bright, "LINE_STRIP");
+            // points.draw(context, program_state, (a.location_matrix).times(Mat4.scale(...size)), this.bright, "LINE_STRIP");
             
             for (let b of this.bodies) {
                 if (a.check_if_colliding(b, this.collider)) {
