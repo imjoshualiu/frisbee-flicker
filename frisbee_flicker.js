@@ -297,19 +297,19 @@ export class frisbee_flicker extends Scene {
 
     }
 
-    update_fribsee_angle() {
-        if (this.frisbee_angle < 0) {
-            this.frisbee_angle += (1 / 25);
-            // if(this.frisbee_angle>=0){
-            //     this.frisbee_angle = 0
-            // }
-        } else {
-            this.frisbee_angle -= (1 / 25);
-            // if(this.frisbee_angle<=0){
-            //     this.frisbee_angle = 0
-            // }
-        }
-    }
+    // update_fribsee_angle() {
+    //     if (this.frisbee_angle < 0) {
+    //         this.frisbee_angle += (2 / 25);
+    //         // if(this.frisbee_angle>=0){
+    //         //     this.frisbee_angle = 0
+    //         // }
+    //     } else {
+    //         this.frisbee_angle -= (2 / 25);
+    //         // if(this.frisbee_angle<=0){
+    //         //     this.frisbee_angle = 0
+    //         // }
+    //     }
+    // }
 
     set_stage() {
         if (this.start_stage) {
@@ -485,12 +485,12 @@ export class frisbee_flicker extends Scene {
 
     update_fribsee_angle(){
         if(this.frisbee_angle < 0){
-            this.frisbee_angle+=(0/25);
+            this.frisbee_angle+=(2/25);
             // if(this.frisbee_angle>=0){
             //     this.frisbee_angle = 0
             // }
         } else{
-            this.frisbee_angle-=(0/25);
+            this.frisbee_angle-=(2/25);
             // if(this.frisbee_angle<=0){
             //     this.frisbee_angle = 0
             // }
@@ -598,7 +598,8 @@ export class frisbee_flicker extends Scene {
             //.times(Mat4.rotation(this.distance/45*Math.PI,0,1,0))
             
             this.elapsed_time_prev = elapsed_time
-            this.update_fribsee_angle()
+            
+            
 
             let spin = 2*Math.PI;
             if(this.spin){
@@ -668,7 +669,7 @@ export class frisbee_flicker extends Scene {
             var velmsg = "Velocity: " + this.velocity;
             document.getElementById("velocity").innerHTML = velmsg;
 
-            var angmsg = "Angle: " + this.frisbee_angle;
+            var angmsg = "Angle: " + Math.floor(this.frisbee_angle);
             document.getElementById("angle").innerHTML = angmsg;
 
             let target_transform = model_transform.times(Mat4.translation(0, 5, -400)).times(Mat4.scale(5, 5, 1 / 2))
@@ -700,7 +701,7 @@ export class frisbee_flicker extends Scene {
             var velmsg = "Velocity: " + this.velocity;
             document.getElementById("velocity").innerHTML = velmsg;
 
-            var angmsg = "Angle: " + this.frisbee_angle;
+            var angmsg = "Angle: " + Math.floor(this.frisbee_angle);
             document.getElementById("angle").innerHTML = angmsg;
 
             let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
@@ -739,7 +740,7 @@ export class frisbee_flicker extends Scene {
             var velmsg = "Velocity: " + this.velocity;
             document.getElementById("velocity").innerHTML = velmsg;
 
-            var angmsg = "Angle: " + this.frisbee_angle;
+            var angmsg = "Angle: " + Math.floor(this.frisbee_angle);
             document.getElementById("angle").innerHTML = angmsg;
 
             let target_transform = model_transform.times(Mat4.translation(0, 10, -400)).times(Mat4.scale(5, 5, 1 / 2))
@@ -781,7 +782,7 @@ export class frisbee_flicker extends Scene {
             var velmsg = "Velocity: " + this.velocity;
             document.getElementById("velocity").innerHTML = velmsg;
 
-            var angmsg = "Angle: " + this.frisbee_angle;
+            var angmsg = "Angle: " + Math.floor(this.frisbee_angle);
             document.getElementById("angle").innerHTML = angmsg;
 
             let target_transform1 = model_transform.times(Mat4.translation(50, 10, -310)).times(Mat4.scale(5, 5, 1 / 2))
@@ -821,7 +822,7 @@ export class frisbee_flicker extends Scene {
             var velmsg = "Velocity: " + this.velocity;
             document.getElementById("velocity").innerHTML = velmsg;
 
-            var angmsg = "Angle: " + this.frisbee_angle;
+            var angmsg = "Angle: " + Math.floor(this.frisbee_angle);
             document.getElementById("angle").innerHTML = angmsg;
 
             if(Math.abs(this.target_distance) > 30){
